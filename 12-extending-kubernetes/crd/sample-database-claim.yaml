@@ -1,0 +1,7 @@
+apiVersion: learning.example.com/v1alpha1
+kind: DatabaseClaim
+metadata:
+  name: demo
+spec:
+  engine: postgres
+  storageGB: 5

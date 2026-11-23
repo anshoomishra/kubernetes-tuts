@@ -409,13 +409,18 @@ Spend at least 60% of study time on hands-on practice. Rebuild each lab from YAM
 
 ## 5. Repository Structure
 
-The repository is organized so each folder maps to one syllabus module and contains independent, runnable examples.
+The repository is organized so each numbered module maps to one syllabus topic. Every module has its own `README.md`, practical lab instructions, and solution notes, plus runnable manifests or module-specific resources.
 
 ```text
 kubernetes-tuts/
+├── .github/
+│   └── workflows/
+│       └── validate-kubernetes.yml
 ├── 01-foundations/
+│   ├── README.md
 │   ├── manifests/
-│   └── labs/
+│   ├── labs/
+│   └── solutions/
 ├── 02-pods-workloads/
 │   ├── manifests/
 │   └── labs/
@@ -460,6 +465,8 @@ kubernetes-tuts/
 ├── diagrams/
 └── README.md
 ```
+
+The CI workflow checks the sample Helm chart and renders both Kustomize overlays on pushes and pull requests. See [Module 13](13-cicd-gitops/README.md) for the CI/CD and GitOps lab.
 
 Recommended contents for each module:
 

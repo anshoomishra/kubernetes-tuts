@@ -1,0 +1,38 @@
+name: Validate Kubernetes examples
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: v1.31.0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.16.4
+
+      - name: Lint Helm chart
+        run: helm lint 08-application-management/helm/hello-app
+
+      - name: Render Kustomize overlays
+        run: |
+          kubectl kustomize 08-application-management/kustomize/overlays/dev > /dev/null
+          kubectl kustomize 08-application-management/kustomize/overlays/prod > /dev/null
+
+      - name: Render Helm chart
+        run: helm template ci 08-application-management/helm/hello-app > /dev/null

@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubernetes-tuts-dev
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/anshoomishra/kubernetes-tuts.git
+    targetRevision: main
+    path: 08-application-management/kustomize/overlays/dev
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: hello-dev
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

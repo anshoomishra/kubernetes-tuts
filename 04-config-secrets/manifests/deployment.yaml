@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: config-demo
+  template:
+    metadata:
+      labels:
+        app: config-demo
+    spec:
+      containers:
+        - name: app
+          image: busybox:1.36
+          command: ["sh", "-c", "echo Config: $APP_MODE; sleep 3600"]
+          envFrom:
+            - configMapRef:
+                name: app-settings
+          env:
+            - name: APP_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: app-credentials
+                  key: username
+            - name: APP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-credentials
+                  key: password
+          volumeMounts:
+            - name: app-properties
+              mountPath: /etc/app
+              readOnly: true
+      volumes:
+        - name: app-properties
+          configMap:
+            name: app-settings
+            items:
+              - key: application.properties
+                path: application.properties

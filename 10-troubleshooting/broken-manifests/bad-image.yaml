@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-image-demo
+spec:
+  restartPolicy: Never
+  containers:
+    - name: app
+      image: example.invalid/learning/image-that-does-not-exist:v0

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: observe-demo
+  labels:
+    app: observe-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: observe-demo
+  template:
+    metadata:
+      labels:
+        app: observe-demo
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27-alpine
+          ports:
+            - name: http
+              containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 250m
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: observe-demo
+spec:
+  selector:
+    app: observe-demo
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

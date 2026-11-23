@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-settings
+data:
+  APP_MODE: "learning"
+  LOG_LEVEL: "info"
+  application.properties: |
+    welcome.message=Hello from a mounted ConfigMap
+    feature.demo.enabled=true
